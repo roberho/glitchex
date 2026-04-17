@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Glitchex - Browser-based image manipulation suite with real-time visual effects"
+    />
+    <title>Glitchex - Image Effects Suite</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header>
+        <h1>Glitchex</h1>
+        <p class="subtitle">Real-time image effects in your browser</p>
+      </header>
+
+      <!-- Main Content -->
+      <main>
+        <!-- Canvas Display Area -->
+        <section class="canvas-wrapper">
+          <div class="canvas-label">Live Preview</div>
+          <div class="canvas-container">
+            <canvas id="baseCanvas"></canvas>
+            <canvas id="overlayCanvas"></canvas>
+            <p class="canvas-placeholder">Upload an image to begin</p>
+          </div>
+        </section>
+
+        <!-- Control Panel -->
+        <section class="controls-panel">
+          <!-- File Upload -->
+          <div class="control-group">
+            <label class="control-label">Image Upload</label>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+            />
+            <button class="upload-btn" id="uploadBtn">Choose Image</button>
+          </div>
+
+          <!-- Effects -->
+          <div class="control-group">
+            <label class="control-label">Visual Effects</label>
+            <div class="effects-grid">
+              <button class="effect-btn" data-effect="bw">
+                Black & White
+              </button>
+              <button class="effect-btn" data-effect="sepia">Sepia</button>
+              <button class="effect-btn" data-effect="glitch">Glitch</button>
+              <button class="effect-btn" data-effect="cctv">CCTV</button>
+            </div>
+          </div>
+
+          <!-- Intensity Control -->
+          <div class="control-group">
+            <label class="control-label">
+              <div class="slider-display">
+                <span>Effect Intensity</span>
+                <span id="intensityValue">5</span>
+              </div>
+            </label>
+            <input
+              type="range"
+              id="intensitySlider"
+              min="1"
+              max="10"
+              value="5"
+              step="1"
+            />
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="control-group">
+            <div class="button-group">
+              <button class="control-btn" id="resetBtn">Reset Image</button>
+              <button class="control-btn" id="downloadBtn">Download</button>
+            </div>
+          </div>
+
+          <!-- Status Indicator -->
+          <div class="status-text" id="statusText">Ready</div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>
+          Glitchex &copy; 2026 | All processing happens in your browser | Zero
+          data sent to servers
+        </p>
+      </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/prismatjs.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,462 @@
+/**
+ * Glitchex Stylesheet
+ * Responsive design using CSS Grid and Flexbox
+ * Dark, modern aesthetic for image effects dashboard
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-bg: #0a0e27;
+  --secondary-bg: #141829;
+  --accent-primary: #00d4ff;
+  --accent-secondary: #ff006e;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b9c1;
+  --border-color: #1f2937;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+/* Main Container */
+.container {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  gap: 0;
+}
+
+/* Header */
+header {
+  grid-area: header;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 2rem;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Main Content Area */
+main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  overflow: auto;
+}
+
+/* Canvas Display Area */
+.canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  max-height: 80vh;
+}
+
+.canvas-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.canvas-container {
+  position: relative;
+  background: #000000;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  aspect-ratio: auto;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+#baseCanvas {
+  position: relative;
+  z-index: 1;
+}
+
+#overlayCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.canvas-placeholder {
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Control Panel */
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* File Upload */
+#fileInput {
+  display: none;
+}
+
+.upload-btn,
+.effect-btn,
+.control-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.upload-btn {
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  color: var(--primary-bg);
+  border: 2px solid transparent;
+}
+
+.upload-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+}
+
+.upload-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Effect Buttons Grid */
+.effects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.effect-btn {
+  background: var(--primary-bg);
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+  font-size: 0.8rem;
+}
+
+.effect-btn:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: var(--primary-bg);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.effect-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.effect-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Intensity Slider */
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slider-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+#intensityValue {
+  font-weight: 600;
+  color: var(--accent-primary);
+  font-family: 'Courier New', monospace;
+}
+
+input[type='range'] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    var(--primary-bg) 0%,
+    var(--accent-primary) 100%
+  );
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* Control Buttons */
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.control-btn:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Status Text */
+.status-text {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-align: center;
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.status-text.success {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.status-text.error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+
+.status-text.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+.status-text.processing {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Footer */
+footer {
+  grid-area: footer;
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  background: rgba(10, 14, 39, 0.95);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  main {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .controls-panel {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  main {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .canvas-wrapper,
+  .controls-panel {
+    padding: 1rem;
+  }
+
+  .effects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr;
+  }
+
+  .canvas-container {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+
+  .canvas-wrapper,
+  .controls-panel {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .control-btn,
+  .effect-btn,
+  .upload-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
