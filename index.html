@@ -7,6 +7,20 @@
       name="description"
       content="Glitchex - Browser-based image manipulation suite with real-time visual effects"
     />
+    <meta name="theme-color" content="#00d4ff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Glitchex" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    
     <title>Glitchex - Image Effects Suite</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
@@ -100,5 +114,21 @@
     <!-- Scripts -->
     <script src="js/prismatjs.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('js/sw.js')
+            .then((reg) => {
+              console.log('[App] Service Worker registered:', reg);
+            })
+            .catch((err) => {
+              console.log('[App] Service Worker registration failed:', err);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

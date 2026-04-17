@@ -1,0 +1,79 @@
+{
+  "name": "Glitchex - Image Effects Suite",
+  "short_name": "Glitchex",
+  "description": "Real-time image manipulation suite with visual effects. All processing happens in your browser with zero data sent to servers.",
+  "start_url": "/glitchex/index.html",
+  "scope": "/glitchex/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0e27",
+  "theme_color": "#00d4ff",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["graphics", "utilities"],
+  "screenshots": [
+    {
+      "src": "favicon.svg",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Glitch Effect",
+      "short_name": "Glitch",
+      "description": "Apply glitch effect to your image",
+      "url": "/glitchex/index.html?effect=glitch",
+      "icons": [
+        {
+          "src": "favicon.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "CCTV Effect",
+      "short_name": "CCTV",
+      "description": "Apply CCTV effect to your image",
+      "url": "/glitchex/index.html?effect=cctv",
+      "icons": [
+        {
+          "src": "favicon.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/glitchex/index.html",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "media",
+          "accept": ["image/jpeg", "image/png", "image/webp", "image/gif"]
+        }
+      ]
+    }
+  }
+}

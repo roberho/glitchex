@@ -24,14 +24,14 @@ self.onmessage = async (event) => {
         break;
 
       case 'effect':
-        result = handleEffect(payload.effectType, payload.intensity);
+        result = await handleEffect(payload.effectType, payload.intensity);
         break;
 
       case 'reset':
         prisma.reset();
         result = {
           success: true,
-          dataUrl: prisma.getResult(),
+          dataUrl: await prisma.getResult(),
           dimensions: prisma.getDimensions(),
         };
         break;
@@ -124,25 +124,29 @@ async function handleSanitize(payload) {
 /**
  * Handle effect application
  */
-function handleEffect(effectType, intensity) {
+async function handleEffect(effectType, intensity) {
   let dataUrl;
 
   switch (effectType.toLowerCase()) {
     case 'bw':
     case 'blackandwhite':
-      dataUrl = prisma.applyBlackAndWhite();
+      prisma.applyBlackAndWhite();
+      dataUrl = await prisma.getResult();
       break;
 
     case 'sepia':
-      dataUrl = prisma.applySepia();
+      prisma.applySepia();
+      dataUrl = await prisma.getResult();
       break;
 
     case 'glitch':
-      dataUrl = prisma.applyGlitch(intensity || 5);
+      prisma.applyGlitch(intensity || 5);
+      dataUrl = await prisma.getResult();
       break;
 
     case 'cctv':
-      dataUrl = prisma.applyCCTV(intensity || 0.3);
+      prisma.applyCCTV(intensity || 0.3);
+      dataUrl = await prisma.getResult();
       break;
 
     default:

@@ -170,16 +170,6 @@ class GlitchexApp {
    http://localhost:8000
    ```
 
-### GitHub Pages Deployment
-
-1. Push code to GitHub repository
-2. Enable GitHub Pages in repository settings
-3. Select `main` branch as source
-4. Access at: `https://roberho.github.io/glitchex`
-
-**The static file structure is fully compatible with GitHub Pages.**
-
----
 
 ## Effect Parameters
 

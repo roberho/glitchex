@@ -6,7 +6,17 @@
 
 class PrismatJS {
   constructor() {
-    this.canvas = document.createElement('canvas');
+    // Detect if running in Web Worker (no document object)
+    const isWorker = typeof document === 'undefined';
+    
+    if (isWorker) {
+      // Use OffscreenCanvas in Web Worker
+      this.canvas = new OffscreenCanvas(1, 1);
+    } else {
+      // Use regular canvas in browser
+      this.canvas = document.createElement('canvas');
+    }
+    
     this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
     this.imageData = null;
     this.originalImageData = null;
@@ -78,7 +88,6 @@ class PrismatJS {
     }
 
     this.ctx.putImageData(this.imageData, 0, 0);
-    return this.canvas.toDataURL();
   }
 
   /**
@@ -100,7 +109,6 @@ class PrismatJS {
     }
 
     this.ctx.putImageData(this.imageData, 0, 0);
-    return this.canvas.toDataURL();
   }
 
   /**
@@ -134,7 +142,6 @@ class PrismatJS {
     }
 
     this.ctx.putImageData(this.imageData, 0, 0);
-    return this.canvas.toDataURL();
   }
 
   /**
@@ -165,7 +172,6 @@ class PrismatJS {
     }
 
     this.ctx.putImageData(this.imageData, 0, 0);
-    return this.canvas.toDataURL();
   }
 
   /**
@@ -181,9 +187,22 @@ class PrismatJS {
 
   /**
    * Get current canvas as image data URL
+   * Works with both regular Canvas and OffscreenCanvas
    */
-  getResult() {
-    return this.canvas.toDataURL();
+  async getResult() {
+    // Check if this is OffscreenCanvas
+    if (typeof this.canvas.convertToBlob === 'function') {
+      // OffscreenCanvas
+      const blob = await this.canvas.convertToBlob({ type: 'image/png' });
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    } else {
+      // Regular Canvas
+      return this.canvas.toDataURL();
+    }
   }
 
   /**
@@ -200,6 +219,14 @@ class PrismatJS {
     if (!this.imageData) {
       throw new Error('No image loaded. Call sanitizeImage first.');
     }
+  }
+
+  /**
+   * Internal: Helper to convert canvas to dataURL for effects
+   * Works with both regular Canvas and OffscreenCanvas
+   */
+  async _canvasToDataURL() {
+    return this.getResult();
   }
 }
 
