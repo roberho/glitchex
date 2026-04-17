@@ -3,7 +3,7 @@
  * Enables offline support, caching strategy, and PWA functionality
  */
 
-const CACHE_VERSION = 'glitchex-v1';
+const CACHE_VERSION = 'glitchex-v2';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGE = `${CACHE_VERSION}-images`;
@@ -100,7 +100,7 @@ self.addEventListener('fetch', (event) => {
           return fetch(request).then((fetchResponse) => {
             // Cache successful responses
             if (fetchResponse && fetchResponse.status === 200) {
-              cache.put(request, fetchResponse.clone());
+              cache.put(request, fetchResponse.clone()).catch(() => {});
             }
             return fetchResponse;
           });
@@ -126,7 +126,7 @@ self.addEventListener('fetch', (event) => {
           return fetch(request).then((fetchResponse) => {
             // Update cache in background
             if (fetchResponse && fetchResponse.status === 200) {
-              cache.put(request, fetchResponse.clone());
+              cache.put(request, fetchResponse.clone()).catch(() => {});
             }
             return fetchResponse;
           });
@@ -143,7 +143,11 @@ self.addEventListener('fetch', (event) => {
         // Cache successful responses
         if (response && response.status === 200) {
           const cache = request.destination === 'image' ? CACHE_IMAGE : CACHE_DYNAMIC;
-          caches.open(cache).then((c) => c.put(request, response.clone()));
+          const responseForCache = response.clone();
+          caches
+            .open(cache)
+            .then((c) => c.put(request, responseForCache))
+            .catch(() => {});
         }
         return response;
       })

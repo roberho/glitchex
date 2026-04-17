@@ -64,61 +64,47 @@ self.onmessage = async (event) => {
  * Creates a temporary image from ArrayBuffer data
  */
 async function handleSanitize(payload) {
-  return new Promise((resolve, reject) => {
-    const { arrayBuffer, mimeType } = payload;
+  const { arrayBuffer, mimeType } = payload;
 
-    // Validate MIME type
-    const validMimes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/gif',
-    ];
-    if (!validMimes.includes(mimeType)) {
-      reject(new Error(`Invalid image type: ${mimeType}`));
-      return;
-    }
+  // Validate MIME type
+  const validMimes = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/gif',
+  ];
+  if (!validMimes.includes(mimeType)) {
+    throw new Error(`Invalid image type: ${mimeType}`);
+  }
 
-    const blob = new Blob([arrayBuffer], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
+  const blob = new Blob([arrayBuffer], { type: mimeType });
+  const bitmap = await createImageBitmap(blob);
 
-    img.onload = () => {
-      // Redraw to sanitize
-      prisma.canvas.width = img.width;
-      prisma.canvas.height = img.height;
-      prisma.width = img.width;
-      prisma.height = img.height;
+  // Redraw decoded image to sanitize metadata
+  prisma.canvas.width = bitmap.width;
+  prisma.canvas.height = bitmap.height;
+  prisma.width = bitmap.width;
+  prisma.height = bitmap.height;
 
-      const ctx = prisma.ctx;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, prisma.width, prisma.height);
-      ctx.drawImage(img, 0, 0);
+  const ctx = prisma.ctx;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, prisma.width, prisma.height);
+  ctx.drawImage(bitmap, 0, 0);
+  bitmap.close();
 
-      prisma.originalImageData = ctx.getImageData(
-        0,
-        0,
-        prisma.width,
-        prisma.height
-      );
-      prisma.imageData = ctx.getImageData(0, 0, prisma.width, prisma.height);
+  prisma.originalImageData = ctx.getImageData(
+    0,
+    0,
+    prisma.width,
+    prisma.height
+  );
+  prisma.imageData = ctx.getImageData(0, 0, prisma.width, prisma.height);
 
-      URL.revokeObjectURL(url);
-
-      resolve({
-        success: true,
-        dataUrl: prisma.getResult(),
-        dimensions: prisma.getDimensions(),
-      });
-    };
-
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('Failed to load image'));
-    };
-
-    img.src = url;
-  });
+  return {
+    success: true,
+    dataUrl: await prisma.getResult(),
+    dimensions: prisma.getDimensions(),
+  };
 }
 
 /**
